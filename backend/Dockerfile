@@ -5,4 +5,5 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" .
 FROM busybox
 WORKDIR /app
 COPY --from=builder /app/backend /usr/bin/
+EXPOSE 8080
 ENTRYPOINT ["backend"]
