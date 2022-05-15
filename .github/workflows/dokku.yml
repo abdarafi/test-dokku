@@ -1,0 +1,24 @@
+name: Deploy
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-backend:
+    name: Deploy Backend
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Cloning repo
+      uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
+
+    - name: Push backend to Dokku
+      uses: idoberko2/dokku-deploy-github-action@v1
+      with:
+          git_remote_url: ${{ secrets.DOKKU_APP_GIT_URL_BACKEND }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
