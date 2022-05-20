@@ -28,7 +28,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v2
       with:
-        images: ghcr.io/abracawhatbackend
+        images: ghcr.io/abracawhat/backend
         flavor: |
           latest=auto
         tags: |
