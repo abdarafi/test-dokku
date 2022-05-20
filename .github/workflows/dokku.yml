@@ -28,16 +28,19 @@ jobs:
       id: meta
       uses: docker/metadata-action@v2
       with:
-        images: abracawhat/backend
+        images: ghcr.io/abracawhat-backend
+        flavor: |
+          latest=true
+          prefix=
+          suffix=
 
     - name: Build and push Docker image
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v2
       with:
-        context: backend
+        context: .
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-
     # - name: Push backend to Dokku
     #   uses: dokku/github-action@master
     #   with:
