@@ -31,6 +31,9 @@ jobs:
         images: ghcr.io/abracawhat-backend
         flavor: |
           latest=auto
+        tags: |
+          # set latest tag for main branch
+          type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
