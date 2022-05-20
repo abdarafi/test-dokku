@@ -29,10 +29,6 @@ jobs:
       uses: docker/metadata-action@v2
       with:
         images: ghcr.io/abracawhat-backend
-        flavor: |
-          latest=true
-          prefix=
-          suffix=
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
