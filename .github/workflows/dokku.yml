@@ -41,8 +41,3 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-    # - name: Push backend to Dokku
-    #   uses: dokku/github-action@master
-    #   with:
-    #       git_remote_url: ${{ secrets.DOKKU_APP_GIT_URL_BACKEND }}
-    #       ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }} 
