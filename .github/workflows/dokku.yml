@@ -47,24 +47,14 @@ jobs:
     name: Deploy to Dokku
     runs-on: ubuntu-latest
     steps:
-      - name: Create temp repo for dokku
-        id: dokku_temp_repo
+      - name: Set up SSH
         run: |
-          echo "FROM $IMAGE_URL" > Dockerfile
-          git init
-          git config user.email "dev@abracawhat.com"
-          git config user.name "Abracawhat Dev"
-          git add Dockerfile
-          git commit -m "Trigger deployment with a temp Dockerfile"
-          commit=$(git rev-parse HEAD 2>/dev/null || true)
-          echo ::set-output name=commit_sha::$commit
-        env:
-          IMAGE_URL: ghcr.io/abdarafi/abracawhat-backend:latest
-      - name: Push to dokku
-        uses: dokku/github-action@master
-        with:
-          command: deploy
-          git_remote_url: ${{ secrets.DOKKU_APP_GIT_URL_BACKEND }}
-          ssh_private_key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}
-          git_push_flags: '--force'
-          ci_commit: ${{ steps.dokku_temp_repo.outputs.commit_sha }}
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DOKKU_SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan ${{ secrets.DOKKU_HOST }} >> ~/.ssh/known_hosts
+      - name: Deploy app to Dokku
+        run: |
+          ssh root@${{ secrets.DOKKU_HOST }} "\\
+            docker pull ghcr.io/abdarafi/abracawhat-backend:latest && \\
+            dokku git:from-image backend ghcr.io/abdarafi/abracawhat-backend:latest"
