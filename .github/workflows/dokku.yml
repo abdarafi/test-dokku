@@ -56,7 +56,7 @@ jobs:
       - name: Deploy app to Dokku
         run: |
           ssh root@${{ secrets.DOKKU_HOST }} "
-            echo "anjeng"
-            export IMAGE_SHA=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/abdarafi/abracawhat-backend:latest)
+            docker pull ghcr.io/abdarafi/abracawhat-backend:latest;
+            export IMAGE_SHA=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/abdarafi/abracawhat-backend:latest);
             dokku git:from-image backend $IMAGE_SHA
           "
