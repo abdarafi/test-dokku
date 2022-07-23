@@ -57,6 +57,5 @@ jobs:
         run: |
           ssh root@${{ secrets.DOKKU_HOST }} "
             docker pull ghcr.io/abdarafi/abracawhat-backend:latest;
-            IMAGE_SHA=(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/abdarafi/abracawhat-backend:latest);
-            dokku git:from-image backend $IMAGE_SHA
+            dokku git:from-image backend $(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/abdarafi/abracawhat-backend:latest)
           "
